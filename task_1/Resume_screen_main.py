@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template_string, redirect, url_for
 import os
 from werkzeug.utils import secure_filename
-from backend.resume_processor import process_resume
+from resume_processor import process_resume
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'

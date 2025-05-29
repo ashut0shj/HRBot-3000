@@ -1,0 +1,7 @@
+paths:
+  - file: merged_employee_data.csv
+transformations:
+  - read_delimited:
+      delimiter: ","
+      encoding: "utf-8"
+    
