@@ -1,0 +1,58 @@
+{
+  "model_accuracy": 1.0,
+  "confusion_matrix": [
+    [
+      600
+    ]
+  ],
+  "classification_report": {
+    "0": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 600.0
+    },
+    "accuracy": 1.0,
+    "macro avg": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 600.0
+    },
+    "weighted avg": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 600.0
+    }
+  },
+  "feature_importance": [
+    [
+      "Engagement Score",
+      0.0
+    ],
+    [
+      "Satisfaction Score",
+      0.0
+    ],
+    [
+      "Work-Life Balance Score",
+      0.0
+    ],
+    [
+      "Tenure",
+      0.0
+    ],
+    [
+      "Current Employee Rating",
+      0.0
+    ],
+    [
+      "Performance Score",
+      0.0
+    ]
+  ],
+  "total_predictions": 600,
+  "high_risk_threshold": 0.7,
+  "medium_risk_threshold": 0.4
+}

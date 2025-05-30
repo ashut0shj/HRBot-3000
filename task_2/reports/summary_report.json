@@ -1,0 +1,38 @@
+{
+  "project_title": "Employee Attrition Prediction System",
+  "data_summary": {
+    "total_records": 3000,
+    "attrition_rate": 0.0,
+    "avg_engagement": 2.9396666666666667,
+    "avg_satisfaction": 3.022,
+    "avg_work_life_balance": 2.989,
+    "avg_tenure": 4.326934246575343,
+    "performance_distribution": {
+      "Fully Meets": 2361,
+      "Exceeds": 369,
+      "Needs Improvement": 177,
+      "PIP": 93
+    }
+  },
+  "model_performance": {
+    "accuracy": 1.0,
+    "total_test_samples": 600
+  },
+  "key_findings": {
+    "top_predictive_factors": [
+      "Engagement Score",
+      "Satisfaction Score",
+      "Work-Life Balance Score"
+    ],
+    "attrition_rate": 0.0,
+    "model_accuracy": 1.0
+  },
+  "visualizations_created": [
+    "feature_importance.png",
+    "confusion_matrix.png",
+    "roc_curve.png",
+    "risk_distribution.png",
+    "correlation_matrix.png",
+    "data_overview.png"
+  ]
+}
