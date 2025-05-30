@@ -1,0 +1,16 @@
+name: attrition-env
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.8
+  - pip
+  - pip:
+    - fastapi
+    - uvicorn
+    - scikit-learn
+    - pandas
+    - numpy
+    - joblib
+    - python-dotenv
+    - google-generativeai

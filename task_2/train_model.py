@@ -1,155 +1,147 @@
 import pandas as pd
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
-import joblib
 import numpy as np
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, classification_report
+from sklearn.model_selection import cross_val_score, StratifiedKFold
+from imblearn.over_sampling import SMOTE
+import joblib
+import json
+import os
 
-def train_attrition_model():
-    """Train the attrition prediction model"""
-    print("Training attrition prediction model...")
-    
-    # Load preprocessed data
+def train_models():
     X_train = pd.read_csv('data/X_train.csv')
     X_test = pd.read_csv('data/X_test.csv')
     y_train = pd.read_csv('data/y_train.csv').squeeze()
     y_test = pd.read_csv('data/y_test.csv').squeeze()
     
-    print(f"Training samples: {len(X_train)}")
-    print(f"Test samples: {len(X_test)}")
+    print(f"Original training distribution: {y_train.value_counts().to_dict()}")
+    print(f"Test distribution: {y_test.value_counts().to_dict()}")
     
-    # Initialize model with better regularization to prevent overfitting
-    model = RandomForestClassifier(
-        n_estimators=50,
-        random_state=42,
-        max_depth=5,
-        min_samples_split=20,
-        min_samples_leaf=10,
-        max_features='sqrt'
-    )
+    if len(y_train.unique()) < 2:
+        print("ERROR: Only one class in training data")
+        return None
     
-    # Train model
-    model.fit(X_train, y_train)
+    smote = SMOTE(random_state=42, k_neighbors=min(5, y_train.sum()-1))
+    X_train_balanced, y_train_balanced = smote.fit_resample(X_train, y_train)
     
-    # Evaluate performance
-    train_pred = model.predict(X_train)
-    test_pred = model.predict(X_test)
+    print(f"After SMOTE: {pd.Series(y_train_balanced).value_counts().to_dict()}")
     
-    train_accuracy = accuracy_score(y_train, train_pred)
-    test_accuracy = accuracy_score(y_test, test_pred)
-    
-    print(f"Training accuracy: {train_accuracy:.3f}")
-    print(f"Test accuracy: {test_accuracy:.3f}")
-    
-    # Save model
-    joblib.dump(model, 'attrition_model.pkl')
-    print("Model saved successfully")
-    
-    return model, test_accuracy
-
-def get_feature_importance():
-    """Get feature importance for reporting"""
-    model = joblib.load('attrition_model.pkl')
-    X_train = pd.read_csv('data/X_train.csv')
-    
-    feature_names = X_train.columns
-    importance_scores = model.feature_importances_
-    
-    feature_importance = dict(zip(feature_names, importance_scores))
-    sorted_features = sorted(feature_importance.items(), key=lambda x: x[1], reverse=True)
-    
-    return sorted_features
-
-def test_model_prediction():
-    """Test model with sample data"""
-    print("Testing model with sample employee...")
-    
-    model = joblib.load('attrition_model.pkl')
-    encoder = joblib.load('performance_encoder.pkl')
-    X_train = pd.read_csv('data/X_train.csv')
-    
-    # Get available performance scores from encoder
-    available_scores = encoder.classes_
-    print(f"Available performance scores: {list(available_scores)}")
-    
-    # Use actual performance scores from the data
-    performance_score = 'Fully Meets' if 'Fully Meets' in available_scores else available_scores[0]
-    
-    # Test cases using actual data structure with proper DataFrame
-    test_cases = [
-        {
-            'name': 'High Risk Employee',
-            'data': [1.5, 2.0, 2.0, 0.5, 2, encoder.transform([performance_score])[0]]
-        },
-        {
-            'name': 'Medium Risk Employee', 
-            'data': [3.0, 3.5, 3.0, 2.0, 3, encoder.transform([performance_score])[0]]
-        },
-        {
-            'name': 'Low Risk Employee',
-            'data': [4.5, 4.5, 4.0, 5.0, 4, encoder.transform([performance_score])[0]]
-        }
-    ]
-    
-    for case in test_cases:
-        # Create DataFrame with proper feature names to avoid warning
-        test_df = pd.DataFrame([case['data']], columns=X_train.columns)
-        
-        # Get prediction probabilities
-        probabilities = model.predict_proba(test_df)[0]
-        
-        # Check if model predicts both classes (fix for IndexError)
-        if len(probabilities) > 1:
-            risk_prob = probabilities[1]
-        else:
-            risk_prob = probabilities[0]
-            
-        print(f"{case['name']}: {risk_prob:.3f} risk probability")
-
-def generate_model_report():
-    """Generate comprehensive model report"""
-    model = joblib.load('attrition_model.pkl')
-    
-    # Load test data for evaluation
-    X_test = pd.read_csv('data/X_test.csv')
-    y_test = pd.read_csv('data/y_test.csv').squeeze()
-    
-    # Predictions
-    y_pred = model.predict(X_test)
-    y_pred_proba = model.predict_proba(X_test)
-    
-    # Handle probability extraction based on number of classes
-    if y_pred_proba.shape[1] > 1:
-        y_pred_proba_pos = y_pred_proba[:, 1]
-    else:
-        y_pred_proba_pos = y_pred_proba[:, 0]
-    
-    # Metrics
-    accuracy = accuracy_score(y_test, y_pred)
-    conf_matrix = confusion_matrix(y_test, y_pred)
-    class_report = classification_report(y_test, y_pred, output_dict=True)
-    
-    # Feature importance
-    feature_importance = get_feature_importance()
-    
-    report = {
-        'model_accuracy': accuracy,
-        'confusion_matrix': conf_matrix.tolist(),
-        'classification_report': class_report,
-        'feature_importance': feature_importance,
-        'total_predictions': len(y_test),
-        'high_risk_threshold': 0.7,
-        'medium_risk_threshold': 0.4
+    models = {
+        'RandomForest': RandomForestClassifier(
+            n_estimators=500,
+            max_depth=15,
+            min_samples_split=10,
+            min_samples_leaf=5,
+            max_features='sqrt',
+            random_state=42,
+            class_weight='balanced'
+        ),
+        'GradientBoosting': GradientBoostingClassifier(
+            n_estimators=300,
+            max_depth=6,
+            learning_rate=0.05,
+            subsample=0.8,
+            random_state=42
+        ),
+        'LogisticRegression': LogisticRegression(
+            random_state=42,
+            class_weight='balanced',
+            max_iter=3000,
+            C=0.1,
+            penalty='l2'
+        )
     }
     
-    return report
+    best_model = None
+    best_score = 0
+    best_name = ""
+    results = {}
+    
+    cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+    
+    for name, model in models.items():
+        print(f"\nTraining {name}...")
+        
+        cv_scores = cross_val_score(model, X_train_balanced, y_train_balanced, 
+                                   cv=cv, scoring='roc_auc')
+        
+        model.fit(X_train_balanced, y_train_balanced)
+        
+        y_pred = model.predict(X_test)
+        y_proba = model.predict_proba(X_test)[:, 1]
+        
+        accuracy = accuracy_score(y_test, y_pred)
+        precision = precision_score(y_test, y_pred, zero_division=0)
+        recall = recall_score(y_test, y_pred, zero_division=0)
+        f1 = f1_score(y_test, y_pred, zero_division=0)
+        auc = roc_auc_score(y_test, y_proba)
+        
+        results[name] = {
+            'cv_auc_mean': cv_scores.mean(),
+            'cv_auc_std': cv_scores.std(),
+            'accuracy': accuracy,
+            'precision': precision,
+            'recall': recall,
+            'f1': f1,
+            'auc': auc
+        }
+        
+        print(f"CV AUC: {cv_scores.mean():.3f} ± {cv_scores.std():.3f}")
+        print(f"Test AUC: {auc:.3f}")
+        print(f"Test F1: {f1:.3f}")
+        print(f"Precision: {precision:.3f}, Recall: {recall:.3f}")
+        
+        if auc > best_score:
+            best_score = auc
+            best_model = model
+            best_name = name
+    
+    print(f"\nBest model: {best_name} with AUC: {best_score:.3f}")
+    
+    joblib.dump(best_model, 'attrition_model.pkl')
+    
+    os.makedirs('model_info', exist_ok=True)
+    
+    y_pred_final = best_model.predict(X_test)
+    y_proba_final = best_model.predict_proba(X_test)[:, 1]
+    
+    print(f"\nFinal Model Performance:")
+    print(classification_report(y_test, y_pred_final))
+    
+    high_risk = (y_proba_final > 0.7).sum()
+    medium_risk = ((y_proba_final > 0.4) & (y_proba_final <= 0.7)).sum()
+    low_risk = (y_proba_final <= 0.4).sum()
+    
+    print(f"\nRisk Distribution:")
+    print(f"High Risk (>0.7): {high_risk}")
+    print(f"Medium Risk (0.4-0.7): {medium_risk}")
+    print(f"Low Risk (<0.4): {low_risk}")
+    
+    model_info = {
+        'best_model': best_name,
+        'best_auc': best_score,
+        'model_comparison': results,
+        'feature_names': list(X_train.columns),
+        'risk_distribution': {
+            'high': int(high_risk),
+            'medium': int(medium_risk),
+            'low': int(low_risk)
+        }
+    }
+    
+    if hasattr(best_model, 'feature_importances_'):
+        importance_dict = dict(zip(X_train.columns, best_model.feature_importances_))
+        model_info['feature_importance'] = importance_dict
+        
+        print(f"\nFeature Importance:")
+        for feature, importance in sorted(importance_dict.items(), key=lambda x: x[1], reverse=True):
+            print(f"{feature}: {importance:.3f}")
+    
+    with open('model_info/model_comparison.json', 'w') as f:
+        json.dump(model_info, f, indent=2, default=str)
+    
+    return best_model, results
 
 if __name__ == "__main__":
-    model, accuracy = train_attrition_model()
-    test_model_prediction()
-    
-    # Generate and save report
-    report = generate_model_report()
-    import json
-    with open('model_report.json', 'w') as f:
-        json.dump(report, f, indent=2)
-    print("Model report saved to model_report.json")
+    train_models()

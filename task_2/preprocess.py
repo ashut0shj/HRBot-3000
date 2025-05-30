@@ -1,28 +1,16 @@
 import pandas as pd
-from sklearn.preprocessing import LabelEncoder
+import numpy as np
+from sklearn.preprocessing import LabelEncoder, RobustScaler
 from sklearn.model_selection import train_test_split
 import joblib
 import os
 
-def load_and_clean_data():
-    """Load and clean HR data"""
-    print("Loading HR data...")
+def prepare_training_data():
+    df = pd.read_csv("dataset/merged_employee_data.csv")
     
-    df = pd.read_csv("merged_employee_data.csv")
-    print(f"Loaded {len(df)} employee records")
+    terminated_statuses = ['Voluntarily Terminated', 'Terminated for Cause', 'Terminated']
+    df['left'] = df['EmployeeStatus'].isin(terminated_statuses).astype(int)
     
-    # Create target variable
-    df['left'] = (df['EmployeeStatus'] == 'Terminated').astype(int)
-    
-    # Handle missing values
-    df['Engagement Score'] = df['Engagement Score'].fillna(3)
-    df['Satisfaction Score'] = df['Satisfaction Score'].fillna(3)
-    df['Work-Life Balance Score'] = df['Work-Life Balance Score'].fillna(3)
-    df['Current Employee Rating'] = df['Current Employee Rating'].fillna(3)
-    df['Tenure'] = df['Tenure'].fillna(1)
-    df['Performance Score'] = df['Performance Score'].fillna('Fully Meets')
-    
-    # Select required columns
     required_columns = [
         'Engagement Score', 
         'Satisfaction Score', 
@@ -34,58 +22,55 @@ def load_and_clean_data():
     ]
     
     df_clean = df[required_columns].copy()
+    
+    numeric_cols = ['Engagement Score', 'Satisfaction Score', 'Work-Life Balance Score', 
+                   'Tenure', 'Current Employee Rating']
+    
+    for col in numeric_cols:
+        df_clean[col] = pd.to_numeric(df_clean[col], errors='coerce')
+        df_clean[col] = df_clean[col].fillna(df_clean[col].median())
+    
+    df_clean['Performance Score'] = df_clean['Performance Score'].fillna(df_clean['Performance Score'].mode()[0])
+    
     df_clean = df_clean.dropna()
     
-    print(f"Clean dataset: {len(df_clean)} records")
-    print(f"Attrition rate: {df_clean['left'].mean():.1%}")
+    if df_clean['left'].sum() == 0:
+        print("ERROR: No attrition cases found in data")
+        return None
     
-    return df_clean
-
-def prepare_training_data():
-    """Prepare data for model training"""
-    df = load_and_clean_data()
-    
-    # Encode performance scores
     encoder = LabelEncoder()
-    df['Performance Score'] = encoder.fit_transform(df['Performance Score'])
+    df_clean['Performance Score'] = encoder.fit_transform(df_clean['Performance Score'])
     
-    # Split features and target
-    X = df.drop('left', axis=1)
-    y = df['left']
+    scaler = RobustScaler()
+    df_clean[numeric_cols] = scaler.fit_transform(df_clean[numeric_cols])
     
-    # Train-test split
+    X = df_clean.drop('left', axis=1)
+    y = df_clean['left']
+    
+    print(f"Total samples: {len(df_clean)}")
+    print(f"Attrition cases: {y.sum()}")
+    print(f"Attrition rate: {y.mean():.2%}")
+    
+    if y.sum() < 10:
+        print("WARNING: Very few attrition cases, model may not be reliable")
+    
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.2, random_state=42, stratify=y
     )
     
-    # Save processed data
     os.makedirs('data', exist_ok=True)
     X_train.to_csv('data/X_train.csv', index=False)
     X_test.to_csv('data/X_test.csv', index=False)
     y_train.to_csv('data/y_train.csv', index=False)
     y_test.to_csv('data/y_test.csv', index=False)
     
-    # Save encoder
     joblib.dump(encoder, 'performance_encoder.pkl')
+    joblib.dump(scaler, 'scaler.pkl')
     
-    print("Data preprocessing completed")
+    print(f"Training samples: {len(X_train)}")
+    print(f"Test samples: {len(X_test)}")
+    
     return X_train, X_test, y_train, y_test
-
-def get_data_summary():
-    """Generate data summary for reporting"""
-    df = load_and_clean_data()
-    
-    summary = {
-        'total_records': len(df),
-        'attrition_rate': df['left'].mean(),
-        'avg_engagement': df['Engagement Score'].mean(),
-        'avg_satisfaction': df['Satisfaction Score'].mean(),
-        'avg_work_life_balance': df['Work-Life Balance Score'].mean(),
-        'avg_tenure': df['Tenure'].mean(),
-        'performance_distribution': df['Performance Score'].value_counts().to_dict()
-    }
-    
-    return summary
 
 if __name__ == "__main__":
     prepare_training_data()

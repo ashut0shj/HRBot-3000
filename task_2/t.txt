@@ -1,0 +1,95 @@
+Welcome to fish, the friendly interactive shell
+Type help for instructions on how to use fish
+                                                                      ~ 100
+ashut0sh ❯ az login
+A web browser has been opened at https://login.microsoftonline.com/organizations/oauth2/v2.0/authorize. Please continue the login in the web browser. If no web browser is available or if the web browser fails to open, use device code flow with `az login --use-device-code`.
+Opening in existing browser session.
+
+Retrieving tenants and subscriptions for the selection...
+
+[Tenant and subscription selection]
+
+No     Subscription name    Subscription ID                       Tenant
+-----  -------------------  ------------------------------------  -----------------
+[1] *  Azure for Students   4890ff6c-9baa-4f48-b125-fd0bf57adaa8  Default Directory
+
+The default is marked with an *; the default tenant is 'Default Directory' and subscription is 'Azure for Students' (4890ff6c-9baa-4f48-b125-fd0bf57adaa8).
+
+Select a subscription and tenant (Type a number or Enter for no changes): 1
+
+Tenant: Default Directory
+Subscription: Azure for Students (4890ff6c-9baa-4f48-b125-fd0bf57adaa8)
+
+[Announcements]
+With the new Azure CLI login experience, you can select the subscription you want to use more easily. Learn more about it and its configuration at https://go.microsoft.com/fwlink/?linkid=2271236
+
+If you encounter any problem, please open an issue at https://aka.ms/azclibug
+
+[Warning] The login output has been updated. Please be aware that it no longer displays the full list of available subscriptions by default.
+
+                                                                                          ~ 100
+18.295s ashut0sh ❯ az group create --name hr-sentiment-rg --location eastus2
+{
+  "id": "/subscriptions/4890ff6c-9baa-4f48-b125-fd0bf57adaa8/resourceGroups/hr-sentiment-rg",
+  "location": "eastus2",
+  "managedBy": null,
+  "name": "hr-sentiment-rg",
+  "properties": {
+    "provisioningState": "Succeeded"
+  },
+  "tags": null,
+  "type": "Microsoft.Resources/resourceGroups"
+}
+                                                                                          ~ 100
+3.974s ashut0sh ❯ az ml workspace create --name hr-sentiment-ws --resource-group hr-sentiment-rg --location eastus2
+The deployment request hr-sentiment-ws-6499493 was accepted. ARM deployment URI for reference: 
+https://portal.azure.com//#blade/HubsExtension/DeploymentDetailsBlade/overview/id/%2Fsubscriptions%2F4890ff6c-9baa-4f48-b125-fd0bf57adaa8%2FresourceGroups%2Fhr-sentiment-rg%2Fproviders%2FMicrosoft.Resources%2Fdeployments%2Fhr-sentiment-ws-6499493
+Creating Key Vault: (hrsentimkeyvaultccb11f51  ) ..  Done (25s)
+Creating Log Analytics Workspace: (hrsentimlogalytia36cea21  )  Done (23s)
+Creating Storage Account: (hrsentimstorageac02d7ad1  )  Done (26s)
+Creating Application Insights: (hrsentiminsights9debaf57  )  Done (30s)
+Creating AzureML Workspace: (hr-sentiment-ws  ) ....  Done (39s)
+Total time : 1m 21s
+
+{
+  "allow_roleassignment_on_rg": true,
+  "application_insights": "/subscriptions/4890ff6c-9baa-4f48-b125-fd0bf57adaa8/resourceGroups/hr-sentiment-rg/providers/Microsoft.insights/components/hrsentiminsights9debaf57",
+  "description": "hr-sentiment-ws",
+  "discovery_url": "https://eastus2.api.azureml.ms/discovery",
+  "display_name": "hr-sentiment-ws",
+  "enable_data_isolation": false,
+  "hbi_workspace": false,
+  "id": "/subscriptions/4890ff6c-9baa-4f48-b125-fd0bf57adaa8/resourceGroups/hr-sentiment-rg/providers/Microsoft.MachineLearningServices/workspaces/hr-sentiment-ws",
+  "identity": {
+    "principal_id": "128193e6-c78f-4099-9cfb-c7607dde6d73",
+    "tenant_id": "7b47ae42-0af7-4d5c-a24f-e3c52f9aaeb5",
+    "type": "system_assigned"
+  },
+  "key_vault": "/subscriptions/4890ff6c-9baa-4f48-b125-fd0bf57adaa8/resourceGroups/hr-sentiment-rg/providers/Microsoft.Keyvault/vaults/hrsentimkeyvaultccb11f51",
+  "location": "eastus2",
+  "managed_network": {
+    "isolation_mode": "disabled",
+    "outbound_rules": []
+  },
+  "mlflow_tracking_uri": "azureml://eastus2.api.azureml.ms/mlflow/v1.0/subscriptions/4890ff6c-9baa-4f48-b125-fd0bf57adaa8/resourceGroups/hr-sentiment-rg/providers/Microsoft.MachineLearningServices/workspaces/hr-sentiment-ws",
+  "name": "hr-sentiment-ws",
+  "network_acls": {
+    "default_action": "Allow",
+    "ip_rules": []
+  },
+  "provision_network_now": false,
+  "public_network_access": "Enabled",
+  "resourceGroup": "hr-sentiment-rg",
+  "resource_group": "hr-sentiment-rg",
+  "serverless_compute": {
+    "no_public_ip": false
+  },
+  "storage_account": "/subscriptions/4890ff6c-9baa-4f48-b125-fd0bf57adaa8/resourceGroups/hr-sentiment-rg/providers/Microsoft.Storage/storageAccounts/hrsentimstorageac02d7ad1",
+  "system_datastores_auth_mode": "accesskey",
+  "tags": {
+    "createdByToolkit": "cli-v2-1.27.2"
+  }
+}
+                                                                                          ~ 100
+1m 41.518s ashut0sh ❯ 
+
