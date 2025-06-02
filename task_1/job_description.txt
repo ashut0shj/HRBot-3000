@@ -1,0 +1,35 @@
+Software Engineer - Full Stack Development
+
+Company: TechCorp Solutions
+Location: Bangalore, India
+Experience: 3-5 years
+
+Job Description:
+We are looking for a skilled Software Engineer to join our dynamic team. 
+
+Responsibilities:
+- Design and develop scalable web applications using React and Node.js
+- Work with databases (PostgreSQL, MongoDB)
+- Collaborate with cross-functional teams
+- Implement CI/CD pipelines
+- Mentor junior developers
+
+Required Skills:
+- 3+ years of experience in full-stack development
+- Strong proficiency in JavaScript, Python
+- Experience with React, Node.js
+- Database design and optimization
+- Problem-solving and analytical skills
+- Excellent communication skills
+
+Preferred Qualifications:
+- Bachelor's degree in Computer Science or related field
+- Experience with cloud platforms (AWS/Azure)
+- Knowledge of machine learning concepts
+- Previous leadership experience
+
+What We Offer:
+- Competitive salary
+- Health insurance
+- Learning and development opportunities
+- Flexible work arrangements
