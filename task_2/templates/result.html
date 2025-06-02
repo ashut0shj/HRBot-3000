@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Results</title>
+</head>
+<body>
+    <h1>Attrition Risk Results</h1>
+    
+    {% if error %}
+        <p><strong>Error:</strong> {{ error }}</p>
+    {% else %}
+        <h2>Risk Level: {{ risk_level }}</h2>
+        <p><strong>Risk Score:</strong> {{ risk_score }}</p>
+        
+        <h3>Suggestions:</h3>
+        <ul>
+        {% for suggestion in suggestions %}
+            <li>{{ suggestion }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    
+    <p><a href="/">Back</a></p>
+</body>
+</html>

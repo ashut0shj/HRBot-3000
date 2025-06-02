@@ -1,0 +1,1 @@
+https://attrition-app.purpleplant-47c020aa.eastus.azurecontainerapps.io/predict 

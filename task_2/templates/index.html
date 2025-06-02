@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Attrition Predictor</title>
+</head>
+<body>
+    <h1>Employee Attrition Predictor</h1>
+    
+    <form action="/predict" method="POST">
+        <p>
+            <label>Engagement Score (1-5):</label><br>
+            <input type="number" name="engagement_score" min="1" max="5" step="0.1" required>
+        </p>
+        
+        <p>
+            <label>Satisfaction Score (1-5):</label><br>
+            <input type="number" name="satisfaction_score" min="1" max="5" step="0.1" required>
+        </p>
+        
+        <p>
+            <label>Work-Life Balance (1-5):</label><br>
+            <input type="number" name="work_life_balance" min="1" max="5" step="0.1" required>
+        </p>
+        
+        <p>
+            <label>Tenure (years):</label><br>
+            <input type="number" name="tenure" min="0" step="0.1" required>
+        </p>
+        
+        <p>
+            <label>Performance Score:</label><br>
+            <select name="performance_score" required>
+                <option value="">Select</option>
+                <option value="Needs Improvement">Needs Improvement</option>
+                <option value="Fully Meets">Fully Meets</option>
+                <option value="Exceeds">Exceeds</option>
+            </select>
+        </p>
+        
+        <p>
+            <label>Current Rating (1-5):</label><br>
+            <select name="current_rating" required>
+                <option value="">Select</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+        </p>
+        
+        <button type="submit">Predict</button>
+    </form>
+</body>
+</html>
