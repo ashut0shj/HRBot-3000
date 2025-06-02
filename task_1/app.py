@@ -6,9 +6,7 @@ from resume_processor import process_resume
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
 
-
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-
 
 UPLOAD_TEMPLATE = '''
 <!DOCTYPE html>

@@ -1,0 +1,296 @@
+{
+  "job_description": {
+    "role": "Software Engineer - Full Stack Development",
+    "experience_required": "3+ years",
+    "technical_skills": [
+      "javascript",
+      "python",
+      "react",
+      "database",
+      "devops"
+    ],
+    "soft_skills": [
+      "problem_solving",
+      "communication",
+      "leadership",
+      "teamwork"
+    ],
+    "education": [
+      "computer_science"
+    ],
+    "responsibilities": [
+      "Design and develop scalable web applications using React and Node.js",
+      "Work with databases (PostgreSQL, MongoDB)",
+      "Collaborate with cross-functional teams",
+      "Implement CI/CD pipelines",
+      "Mentor junior developers"
+    ],
+    "nice_to_have": [
+      "cloud",
+      "machine_learning",
+      "masters",
+      "phd"
+    ],
+    "company_info": "TechCorp Solutions, Bangalore, India"
+  },
+  "resume_analysis": {
+    "role": "Software Engineer - Full Stack Development",
+    "total_experience": "0 years",
+    "technical_skills": [
+      {
+        "skill": "Python",
+        "score": 8,
+        "evidence": "Used extensively in multiple projects (Study-Simplify, Crossword Puzzle Generator)"
+      },
+      {
+        "skill": "JavaScript",
+        "score": 7,
+        "evidence": "Used in Study-Simplify and Blockchain Voting System projects"
+      },
+      {
+        "skill": "React",
+        "score": 7,
+        "evidence": "Used in Blockchain Voting System project"
+      },
+      {
+        "skill": "Flutter",
+        "score": 7,
+        "evidence": "Used in IIITNR-App and Swift Guess projects"
+      },
+      {
+        "skill": "Flask",
+        "score": 6,
+        "evidence": "Used in Study-Simplify and Crossword Puzzle Generator projects"
+      },
+      {
+        "skill": "Solidity",
+        "score": 6,
+        "evidence": "Used in Blockchain Voting System project"
+      },
+      {
+        "skill": "HTML",
+        "score": 5,
+        "evidence": "Mentioned as a skill"
+      },
+      {
+        "skill": "CSS",
+        "score": 5,
+        "evidence": "Mentioned as a skill"
+      },
+      {
+        "skill": "Firebase",
+        "score": 6,
+        "evidence": "Used in IIITNR-App and Swift Guess projects"
+      },
+      {
+        "skill": "Database",
+        "score": 5,
+        "evidence": "Implied use through project descriptions, but specific database systems not explicitly mentioned"
+      },
+      {
+        "skill": "DevOps",
+        "score": 3,
+        "evidence": "Docker mentioned in tools, but no explicit DevOps experience"
+      },
+      {
+        "skill": "AI/ML",
+        "score": 7,
+        "evidence": "Extensive experience with various AI/ML libraries and frameworks mentioned"
+      },
+      {
+        "skill": "NLP",
+        "score": 7,
+        "evidence": "Used in multiple projects, including Study-Simplify and Crossword Puzzle Generator"
+      }
+    ],
+    "soft_skills": [
+      {
+        "skill": "Problem Solving",
+        "score": 8,
+        "evidence": "Demonstrated through project development and leadership roles in hackathons"
+      },
+      {
+        "skill": "Public Speaking",
+        "score": 6,
+        "evidence": "Inferred from leadership roles and mentoring activities"
+      },
+      {
+        "skill": "Leadership",
+        "score": 8,
+        "evidence": "Led Hack-a-Sol 3.0 with 50 members, mentored students"
+      },
+      {
+        "skill": "Cross-functional Collaboration",
+        "score": 7,
+        "evidence": "Worked in teams on multiple projects and coordinated campus recruitment drives"
+      },
+      {
+        "skill": "Communication",
+        "score": 7,
+        "evidence": "Organized recruitment drives and mentored students, implying good communication skills"
+      },
+      {
+        "skill": "Teamwork",
+        "score": 8,
+        "evidence": "Led and participated in team projects and events"
+      }
+    ],
+    "education": [
+      {
+        "degree": "B.Tech",
+        "specialization": "Data Science & Artificial Intelligence",
+        "score": 9
+      }
+    ],
+    "work_experience": [
+      {
+        "company": "Training and Placement Cell",
+        "role": "Junior Placement Coordinator",
+        "duration": "March 2024 \u2013 Present",
+        "tech_relevance": 3
+      },
+      {
+        "company": "The Society of Coders",
+        "role": "Vice Secretary",
+        "duration": "Dec. 2022 \u2013 Present",
+        "tech_relevance": 6
+      }
+    ],
+    "projects": [
+      {
+        "name": "Study-Simplify",
+        "technologies": [
+          "Python",
+          "Flask",
+          "Assembly AI",
+          "NLP",
+          "LLM",
+          "Computer Vision",
+          "JavaScript"
+        ],
+        "score": 8
+      },
+      {
+        "name": "Crossword Puzzle Generator",
+        "technologies": [
+          "AI Algorithms",
+          "OpenAI",
+          "Flask",
+          "Python",
+          "NLP",
+          "LLM"
+        ],
+        "score": 7
+      },
+      {
+        "name": "Blockchain Voting System",
+        "technologies": [
+          "Solidity",
+          "Hardhat",
+          "React",
+          "Ethers.js",
+          "IPFS",
+          "MetaMask"
+        ],
+        "score": 9
+      },
+      {
+        "name": "IIITNR-App",
+        "technologies": [
+          "Flutter",
+          "Dart",
+          "Firebase"
+        ],
+        "score": 7
+      },
+      {
+        "name": "Swift Guess",
+        "technologies": [
+          "Flutter",
+          "Firebase",
+          "Dart"
+        ],
+        "score": 6
+      }
+    ],
+    "achievements": [
+      {
+        "type": "Mentorship",
+        "description": "Mentored 30 students in Data Structures and Algorithms",
+        "bonus_score": 3
+      },
+      {
+        "type": "Hackathon Organization",
+        "description": "Led the organizing team of Hack-a-Sol 3.0, a pan-India hackathon with 50 members",
+        "bonus_score": 4
+      },
+      {
+        "type": "College Activities",
+        "description": "Involved in MUNs, E-Cell operations, coding events, and a state-level pitching event",
+        "bonus_score": 2
+      }
+    ],
+    "resume_quality_scores": {
+      "technical_strength": 85,
+      "soft_skills_strength": 80,
+      "experience_quality": 60,
+      "education_quality": 90,
+      "bonus_points": 9
+    }
+  },
+  "screening_results": {
+    "final_score": 82.75,
+    "jd_matching_scores": {
+      "technical_skills_match": 100.0,
+      "soft_skills_match": 75.0,
+      "education_match": 0.0
+    },
+    "resume_quality_scores": {
+      "technical_strength": 85,
+      "soft_skills_strength": 80,
+      "experience_quality": 60,
+      "education_quality": 90,
+      "bonus_points": 9
+    },
+    "recommendation": "HIRE",
+    "strengths": [
+      "Strong in Python",
+      "Notable achievements: 3 items"
+    ],
+    "gaps": [],
+    "recommendations": []
+  },
+  "similarity_analysis": {
+    "overall_similarity": 72.5,
+    "technical_skills": {
+      "match_percentage": 100.0,
+      "matches": [
+        "javascript",
+        "python",
+        "database",
+        "react",
+        "devops"
+      ],
+      "missing": []
+    },
+    "soft_skills": {
+      "match_percentage": 75.0,
+      "matches": [
+        "communication",
+        "leadership",
+        "teamwork"
+      ],
+      "missing": [
+        "problem_solving"
+      ]
+    },
+    "education": {
+      "match_percentage": 0.0,
+      "matches": [],
+      "missing": [
+        "computer_science"
+      ]
+    }
+  },
+  "timestamp": "2025-06-03"
+}
