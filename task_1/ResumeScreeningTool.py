@@ -7,18 +7,17 @@ from typing import Dict, List, Any
 import re
 import time
 from difflib import SequenceMatcher
-from dotenv import load_dotenv
 
-load_dotenv()
 
 class ResumeScreeningTool:
-    def __init__(self):
-        api_key = os.getenv('GEMINI_API_KEY')
-        if not api_key:
+    def __init__(self, api_key, model='gemini-1.5-flash'):
+        self.api_key = api_key
+        self.model_v = model
+        if not self.api_key:
             raise ValueError("GEMINI_API_KEY not found in environment variables")
         
-        genai.configure(api_key=api_key)
-        self.model = genai.GenerativeModel('gemini-1.5-flash')
+        genai.configure(api_key=self.api_key)
+        self.model = genai.GenerativeModel(self.model_v)
         self.jd_cache = {}
         
         self.skill_tokens = {
@@ -524,32 +523,32 @@ class ResumeScreeningTool:
                     similarity = result.get('similarity_analysis', {})
                     res_data = result.get('resume_analysis', {})
                     
-                    # Format detailed technical skills
+                    
                     tech_skills_detailed = []
                     for skill in res_data.get('technical_skills', []):
                         if isinstance(skill, dict):
                             tech_skills_detailed.append(f"{skill.get('skill', 'Unknown')}: {skill.get('score', 0)}/10 - {skill.get('evidence', 'No evidence')}")
                     
-                    # Format detailed soft skills
+                    
                     soft_skills_detailed = []
                     for skill in res_data.get('soft_skills', []):
                         if isinstance(skill, dict):
                             soft_skills_detailed.append(f"{skill.get('skill', 'Unknown')}: {skill.get('score', 0)}/10 - {skill.get('evidence', 'No evidence')}")
                     
-                    # Format detailed projects
+                    
                     projects_detailed = []
                     for proj in res_data.get('projects', []):
                         if isinstance(proj, dict):
                             techs = ', '.join(proj.get('technologies', []))
                             projects_detailed.append(f"{proj.get('name', 'Unknown')}: {proj.get('score', 0)}/10 - Tech: {techs}")
                     
-                    # Format detailed work experience
+                    
                     work_exp_detailed = []
                     for exp in res_data.get('work_experience', []):
                         if isinstance(exp, dict):
                             work_exp_detailed.append(f"{exp.get('company', 'Unknown')} - {exp.get('role', 'Unknown')} ({exp.get('duration', 'Unknown')}): {exp.get('tech_relevance', 0)}/10")
                     
-                    # Format detailed achievements
+                    
                     achievements_detailed = []
                     for achv in res_data.get('achievements', []):
                         if isinstance(achv, dict):
@@ -585,36 +584,3 @@ class ResumeScreeningTool:
                 writer.writerow(row)
         
         print(f"Results saved to {fname}")
-
-
-def main():
-    tool = ResumeScreeningTool()
-    
-    jd_file = "job_description.txt"
-    
-    
-    try:
-        print("Starting batch processing...")
-        results = tool.batch_screen_resumes(jd_file, "resumes/")
-        
-        print("\nBatch Screening Results:")
-        print("=" * 50)
-        
-        for i, result in enumerate(results[:10], 1):
-            if 'error' not in result:
-                sc = result['screening_results']['final_score']
-                rec = result['screening_results']['recommendation']
-                sim = result.get('similarity_analysis', {}).get('overall_similarity', 0)
-                print(f"{i}. {result['filename']}: {sc}% (AI) | {sim}% (Code) | ({rec})")
-            else:
-                print(f"{i}. {result['filename']}: ERROR - {result['error']}")
-        
-        tool.save_to_csv(results)
-        print("\nProcessing completed successfully!")
-        
-    except Exception as e:
-        print(f"Batch processing error: {e}")
-
-
-if __name__ == "__main__":
-    main()
