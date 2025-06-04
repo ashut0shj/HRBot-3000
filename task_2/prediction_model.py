@@ -2,20 +2,20 @@ import requests
 import pandas as pd
 import csv
 
-# Define API endpoint
+
 url = "https://risk-model-app-12345.blueriver-19dcaa87.eastus2.azurecontainerapps.io/predict"
 
-# Load input CSV
+
 input_csv = "input/employee_input.csv"
 output_csv = "output/employee_output.csv"
 
-# Read input data
+
 df = pd.read_csv(input_csv)
 
-# Prepare output file
+
 output_data = []
 
-# Send each row to the API
+
 for _, row in df.iterrows():
     payload = {
         "engagement_score": row["engagement_score"],
@@ -54,7 +54,7 @@ for _, row in df.iterrows():
             "suggestions": str(e)
         })
 
-# Save to output CSV
+
 output_df = pd.DataFrame(output_data)
 output_df.to_csv(output_csv, index=False)
 
