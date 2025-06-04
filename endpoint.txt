@@ -1,1 +1,1 @@
-https://attrition-app.purpleplant-47c020aa.eastus.azurecontainerapps.io/predict 
+https://risk-model-app-12345.blueriver-19dcaa87.eastus2.azurecontainerapps.io/predict

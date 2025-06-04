@@ -7,9 +7,9 @@ from suggestions import get_ai_suggestions
 
 app = FastAPI()
 
-model = joblib.load('attrition_model.pkl')
-encoder = joblib.load('performance_encoder.pkl')
-scaler = joblib.load('scaler.pkl')
+model = joblib.load('model/attrition_model.pkl')
+encoder = joblib.load('model/performance_encoder.pkl')
+scaler = joblib.load('model/scaler.pkl')
 
 class EmployeeData(BaseModel):
     engagement_score: float
