@@ -3,7 +3,7 @@ import requests
 
 app = Flask(__name__)
 
-API_URL = "https://attrition-app.purpleplant-47c020aa.eastus.azurecontainerapps.io/predict"
+API_URL = "https://risk-model-app-12345.blueriver-19dcaa87.eastus2.azurecontainerapps.io/predict"
 
 @app.route('/')
 def index():

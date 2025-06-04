@@ -1,0 +1,6 @@
+task_2/venv
+task_1/venv
+.env
+/venv
+__pycache__/
+task_2/model/.env

@@ -70,6 +70,10 @@ def predict(data: EmployeeData):
             "suggestions": ["Error occurred during prediction"]
         }
 
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
 @app.get("/")
 def root():
     return {"message": "Employee Attrition Prediction API v2.0"}

@@ -1,0 +1,4 @@
+id,name,engagement_score,satisfaction_score,work_life_balance,tenure,performance_score,current_rating
+1,John Doe,1.5,2.0,2.0,0.5,Needs Improvement,2
+2,Jane Smith,3.0,3.5,3.0,2.0,Fully Meets,3
+3,Alice Johnson,4.5,4.5,4.0,5.0,Exceeds,4

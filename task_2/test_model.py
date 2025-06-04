@@ -1,62 +1,61 @@
 import requests
-import json
+import pandas as pd
+import csv
 
-url =  "https://attrition-app.purpleplant-47c020aa.eastus.azurecontainerapps.io/predict"
+# Define API endpoint
+url = "https://risk-model-app-12345.blueriver-19dcaa87.eastus2.azurecontainerapps.io/predict"
 
+# Load input CSV
+input_csv = "input/employee_input.csv"
+output_csv = "output/employee_output.csv"
 
-test_cases = [
-    {
-        "name": "High Risk Employee",
-        "data": {
-            "engagement_score": 1.5,
-            "satisfaction_score": 2.0,
-            "work_life_balance": 2.0,
-            "tenure": 0.5,
-            "performance_score": "Needs Improvement",
-            "current_rating": 2
-        }
-    },
-    {
-        "name": "Medium Risk Employee",
-        "data": {
-            "engagement_score": 3.0,
-            "satisfaction_score": 3.5,
-            "work_life_balance": 3.0,
-            "tenure": 2.0,
-            "performance_score": "Fully Meets",
-            "current_rating": 3
-        }
-    },
-    {
-        "name": "Low Risk Employee",
-        "data": {
-            "engagement_score": 4.5,
-            "satisfaction_score": 4.5,
-            "work_life_balance": 4.0,
-            "tenure": 5.0,
-            "performance_score": "Exceeds",
-            "current_rating": 4
-        }
+# Read input data
+df = pd.read_csv(input_csv)
+
+# Prepare output file
+output_data = []
+
+# Send each row to the API
+for _, row in df.iterrows():
+    payload = {
+        "engagement_score": row["engagement_score"],
+        "satisfaction_score": row["satisfaction_score"],
+        "work_life_balance": row["work_life_balance"],
+        "tenure": row["tenure"],
+        "performance_score": row["performance_score"],
+        "current_rating": row["current_rating"]
     }
-]
 
-def test_api():
-    for test_case in test_cases:
-        print(f"\nTesting: {test_case['name']}")
-        
-        try:
-            response = requests.post(url, json=test_case['data'])
-            
-            if response.status_code == 200:
-                result = response.json()
-                print(f"Risk Score: {result['attrition_risk']}")
-                print(f"Risk Level: {result['risk_level']}")
-                print(f"Suggestions: {result['suggestions']}")
-            else:
-                print(f"Error: {response.status_code} - {response.text}")
-                
-        except Exception as e:
-            print(f"Error: {e}")
+    try:
+        response = requests.post(url, json=payload)
+        if response.status_code == 200:
+            result = response.json()
+            output_data.append({
+                "id": row["id"],
+                "name": row["name"],
+                "attrition_risk": result["attrition_risk"],
+                "risk_level": result["risk_level"],
+                "suggestions": result["suggestions"]
+            })
+        else:
+            output_data.append({
+                "id": row["id"],
+                "name": row["name"],
+                "attrition_risk": "Error",
+                "risk_level": f"{response.status_code}",
+                "suggestions": response.text
+            })
+    except Exception as e:
+        output_data.append({
+            "id": row["id"],
+            "name": row["name"],
+            "attrition_risk": "Exception",
+            "risk_level": "Error",
+            "suggestions": str(e)
+        })
 
-if __name__ == "__main__":
-    test_api()
+# Save to output CSV
+output_df = pd.DataFrame(output_data)
+output_df.to_csv(output_csv, index=False)
+
+print(f"Results written to {output_csv}")
